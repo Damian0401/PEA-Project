@@ -11,7 +11,7 @@ TBD.
 
 Run following command in _PEA_ directory
 ``` console
-cmake . -G "Unix Makefiles
+cmake . -G "Unix Makefiles"
 ```
 
 ### Build solution and generate executable
