@@ -5,14 +5,16 @@ namespace PEA {
 	class AdjanencyMatrix
 	{
 	public:
-		AdjanencyMatrix(size_t edgeNumber, int* data);
+		AdjanencyMatrix(size_t verticesNumber, int* data);
 		AdjanencyMatrix(const AdjanencyMatrix& origin);
 		~AdjanencyMatrix();
 
 		void displayMatrix();
 		int** getRoot();
+		size_t getVerticesNumber();
+		int getCost(size_t from, size_t to);
 	private:
-		size_t _edgeNumber;
+		size_t _verticesNumber;
 		int** _root = nullptr;
 
 		void allocateMemory();
