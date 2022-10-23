@@ -12,7 +12,7 @@ namespace PEA
 	{
 	public:
 		long long solve(AdjanencyMatrix& matrix, AlgorithmBase& algorithm, 
-			bool display = false, TimeUnit unit = TimeUnit::MICROSECONDS);
+			TimeUnit unit = TimeUnit::MICROSECONDS, bool display = false);
 	private:
 
 	};

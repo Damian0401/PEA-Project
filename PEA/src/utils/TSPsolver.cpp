@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-long long PEA::TSPsolver::solve(AdjanencyMatrix& matrix, AlgorithmBase& algorithm, bool display, TimeUnit unit)
+long long PEA::TSPsolver::solve(AdjanencyMatrix& matrix, AlgorithmBase& algorithm, TimeUnit unit, bool display)
 {
 	Timer timer;
 	timer.start();
