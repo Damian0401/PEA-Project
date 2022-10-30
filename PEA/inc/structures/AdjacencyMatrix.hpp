@@ -9,10 +9,11 @@ namespace PEA {
 		AdjanencyMatrix(const AdjanencyMatrix& origin);
 		~AdjanencyMatrix();
 
-		void displayMatrix();
+		void display();
 		int** getRoot();
 		size_t getVerticesNumber();
 		int getCost(size_t from, size_t to);
+		void setCost(size_t from, size_t to, int cost);
 	private:
 		size_t _verticesNumber;
 		int** _root = nullptr;

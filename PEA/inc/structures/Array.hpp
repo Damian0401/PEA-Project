@@ -22,6 +22,9 @@ namespace SDIZO
 		virtual void set(const size_t& index, const T& data);
 		virtual void swap(size_t first, size_t second);
 		virtual void reverse(size_t first, size_t second);
+		virtual void clear();
+		virtual T* begin();
+		virtual T* end();
 	private:
 		T* head;
 		size_t size;

@@ -273,5 +273,28 @@ void SDIZO::Array<T>::reverse(size_t first, size_t second)
 	}
 }
 
+template<typename T>
+void SDIZO::Array<T>::clear()
+{
+	if (this->size == 0)
+		return;
+
+	delete[] this->head;
+	this->size = 0;
+}
+
+template<typename T>
+T* SDIZO::Array<T>::begin()
+{
+	return this->head;
+}
+
+template<typename T>
+T* SDIZO::Array<T>::end()
+{
+	return this->head + this->size;
+}
+
 template class SDIZO::Array<int>;
+template class SDIZO::Array<bool>;
 template class SDIZO::Array<size_t>;

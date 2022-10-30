@@ -1,6 +1,7 @@
 #include "..\..\inc\structures\AdjacencyMatrix.hpp"
 #include <stdexcept>
 #include <iostream>
+#include <iomanip>
 
 PEA::AdjanencyMatrix::AdjanencyMatrix(size_t verticesNumber, int* data)
 	: _verticesNumber(verticesNumber)
@@ -21,14 +22,14 @@ PEA::AdjanencyMatrix::~AdjanencyMatrix()
 	this->deallocateMemory();
 }
 
-void PEA::AdjanencyMatrix::displayMatrix()
+void PEA::AdjanencyMatrix::display()
 {
 	for (size_t i = 0; i < _verticesNumber; i++)
 	{
 		std::cout << "| ";
 		for (size_t j = 0; j < _verticesNumber; j++)
 		{
-			std::cout << _root[i][j] << " | ";
+			std::cout << std::setw(2) << _root[i][j] << std::fixed << " | ";
 		}
 		std::cout << std::endl;
 	}
@@ -89,9 +90,15 @@ int PEA::AdjanencyMatrix::getCost(size_t from, size_t to)
 	if (from >= _verticesNumber || to >= _verticesNumber)
 		throw new std::out_of_range("Invalid vertex index");
 
-	return _root[from][to] > 0 
-		? _root[from][to] 
-		: -1;
+	return _root[from][to];
+}
+
+void PEA::AdjanencyMatrix::setCost(size_t from, size_t to, int cost)
+{
+	if (from >= _verticesNumber || to >= _verticesNumber)
+		throw new std::out_of_range("Invalid vertex index");
+
+	_root[from][to] = cost;
 }
 
 void PEA::AdjanencyMatrix::copyData(int** data)
