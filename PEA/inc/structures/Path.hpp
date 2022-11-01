@@ -11,6 +11,7 @@ namespace PEA
 		Path(const Path& origin);
 		Path(SDIZO::Array<size_t> vertices, int totalCost);
 		void display();
+		void addVertex(size_t vertex, int cost);
 		int getTotalCost();
 
 	private:
