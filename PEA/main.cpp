@@ -16,10 +16,14 @@ int main()
     auto timeUnit = SDIZO::TimeUnit::MICROSECONDS;
 
     PEA::TSPsolver solver;
+    std::cout << "Brute force" << std::endl;
     solver.solve(matrix, PEA::BruteForce(), timeUnit, true);
     std::cout << std::string(15, '-') << std::endl;
+    std::cout << "Dynamic programming" << std::endl;
     solver.solve(matrix, PEA::DynamicProgramming(), timeUnit, true);
     std::cout << std::string(15, '-') << std::endl;
+    std::cout << "Branch and Bound" << std::endl;
     solver.solve(matrix, PEA::BranchAndBound(), timeUnit, true);
+    std::cout << std::string(15, '-') << std::endl;
 }
 
