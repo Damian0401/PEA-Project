@@ -35,13 +35,13 @@ bool PEA::BruteForce::nextPermutation(SDIZO::Array<size_t>& array)
     * https://takeuforward.org/data-structure/next_permutation-find-next-lexicographically-greater-permutation/
     */
     int n = array.getSize(), k, l;
-    for (k = n - 2; k >= 0; k--) {
+    for (k = n - 2; k > 0; k--) {
         if (array.get(k) < array.get(k + 1)) {
             break;
         }
     }
-    if (k < 0) {
-        array.reverse(0, array.getSize() - 1);
+    if (k < 1) {
+        array.reverse(1, array.getSize() - 1);
         return false;
     }
     else {

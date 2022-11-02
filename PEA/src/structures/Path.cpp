@@ -16,12 +16,6 @@ PEA::Path::Path(SDIZO::Array<size_t> vertices, int totalCost)
 {
 }
 
-PEA::Path::Path(size_t vertex, int cost)
-{
-	_vertices.addFront(vertex);
-	_totalCost = cost;
-}
-
 void PEA::Path::display()
 {
 	std::cout << "Total cost: " << _totalCost << std::endl;
@@ -30,7 +24,7 @@ void PEA::Path::display()
 
 void PEA::Path::addVertex(size_t vertex, int cost)
 {
-	_vertices.addBack(vertex);
+	_vertices.addFront(vertex);
 	_totalCost += cost;
 }
 

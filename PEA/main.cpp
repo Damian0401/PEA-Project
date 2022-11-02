@@ -12,7 +12,7 @@ int main()
     std::string basePath = "C:\\Users\\szkol\\Desktop\\PEA\\PEA-Project1\\PEA\\data\\";
 
     PEA::MatrixReader reader(basePath);
-    auto matrix = reader.read("graph_10.txt");
+    auto matrix = reader.read("graph_12.txt");
     auto timeUnit = SDIZO::TimeUnit::MICROSECONDS;
 
     PEA::TSPsolver solver;
