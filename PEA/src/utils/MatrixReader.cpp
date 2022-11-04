@@ -34,5 +34,8 @@ PEA::AdjanencyMatrix PEA::MatrixReader::read(std::string fileName, bool useBaseP
 		file >> data[i];
 	}
 
-	return AdjanencyMatrix(verticesNumber, data);
+	AdjanencyMatrix matrix(verticesNumber, data);
+	delete[] data;
+
+	return matrix;
 }
