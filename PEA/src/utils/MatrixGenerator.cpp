@@ -18,13 +18,14 @@ PEA::AdjanencyMatrix PEA::MatrixGenerator::generate(size_t verticesNumber)
 	size_t shift = 0;
 	for (size_t i = 0; i < dataSize; i++)
 	{
-		data[i] = values(gen);
-
 		if (i == shift)
 		{
 			data[i] = -1;
 			shift += (1 + verticesNumber);
+			continue;
 		}
+
+		data[i] = values(gen);
 	}
 
 	AdjanencyMatrix matrix(verticesNumber, data);

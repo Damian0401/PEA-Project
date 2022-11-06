@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TimeUnit.hpp"
+#include "enums/TimeUnit.hpp"
 #include <chrono>
 #include <string>
 
