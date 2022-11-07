@@ -1,6 +1,8 @@
 #pragma once
 
 #include "enums/ActionType.hpp"
+#include "enums/Algorithm.hpp"
+#include "../structures/AdjacencyMatrix.hpp"
 
 #include <iostream>
 
@@ -19,6 +21,8 @@ namespace PEA
 		static int getNumber();
 		static ActionType getAnswer(std::string message);
 		static char getChar();
+		static AdjanencyMatrix readMatrix(std::string fileName);
+		static Algorithm selectAlgorithm();
 	};
 }
 

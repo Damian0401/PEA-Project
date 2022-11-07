@@ -27,6 +27,7 @@ void PEA::Menu::show()
 			break;
 		case ActionType::INVALID:
 			std::cout << "You entered invalid data" << std::endl;
+			break;
 		case ActionType::EXIT:
 		default:
 			isFinished = true;
@@ -37,6 +38,7 @@ void PEA::Menu::show()
 
 PEA::ActionType PEA::Menu::selectActionType()
 {
+	std::cout << std::string(15, '-') << std::endl;
 	std::cout << "Select action:" << std::endl;
 	std::cout << "[1] - Manual tests" << std::endl;
 	std::cout << "[2] - Automatic tests" << std::endl;
@@ -62,11 +64,41 @@ PEA::ActionType PEA::Menu::selectActionType()
 void PEA::Menu::manualTests()
 {
 	std::cout << "Manual tests" << std::endl;
+	std::cout << "Enter file name: ";
+
+	std::string fileName;
+	std::cin >> fileName;
+
+	AdjanencyMatrix matrix = Menu::readMatrix(fileName);
+	std::cout << "Size: " << matrix.getVerticesNumber() << std::endl;
+	matrix.display();
+
+	Algorithm algorithm = Menu::selectAlgorithm();
+	TSPsolver solver;
+
+	switch (algorithm)
+	{
+	case PEA::Algorithm::BRUTE_FORCE:
+		solver.solve(matrix, BruteForce(), TimeUnit::MICROSECONDS, true);
+		break;
+	case PEA::Algorithm::DYNAMIC_PROGRAMMING:
+		solver.solve(matrix, DynamicProgramming(), TimeUnit::MICROSECONDS, true);
+		break;
+	case PEA::Algorithm::BRANCH_AND_BOUND:
+		solver.solve(matrix, BranchAndBound(), TimeUnit::MICROSECONDS, true);
+		break;
+	case PEA::Algorithm::NOT_IMPLEMENTED:
+	default:
+		std::cout << "Not implemented" << std::endl;
+		break;
+	}
+
 }
 
 void PEA::Menu::automaticTests()
 {
 	std::cout << "Automatic tests" << std::endl;
+
 }
 
 int PEA::Menu::getNumber()
@@ -106,4 +138,35 @@ char PEA::Menu::getChar()
 	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
 	return answer;
+}
+
+PEA::AdjanencyMatrix PEA::Menu::readMatrix(std::string fileName)
+{
+	std::string basePath = "C:\\Users\\szkol\\Desktop\\PEA\\PEA-Project1\\PEA\\data\\";
+	MatrixReader reader(basePath);
+	AdjanencyMatrix matrix = reader.read(fileName);
+
+	return matrix;
+}
+
+PEA::Algorithm PEA::Menu::selectAlgorithm()
+{
+	std::cout << "Select algorithm:" << std::endl;
+	std::cout << "[1] - Brute Force" << std::endl;
+	std::cout << "[2] - Dynamic programming" << std::endl;
+	std::cout << "[3] - Branch and Bound" << std::endl;
+
+	char algorithm = Menu::getChar();
+
+	switch (algorithm)
+	{
+	case '1':
+		return Algorithm::BRUTE_FORCE;
+	case '2':
+		return Algorithm::DYNAMIC_PROGRAMMING;
+	case '3':
+		return Algorithm::BRANCH_AND_BOUND;
+	default:
+		return Algorithm::NOT_IMPLEMENTED;
+	}
 }
