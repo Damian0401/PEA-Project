@@ -6,7 +6,7 @@ long long PEA::TSPsolver::solve(AdjanencyMatrix& matrix, AlgorithmBase& algorith
 {
 	Timer timer;
 	timer.start();
-
+	
 	auto path = algorithm.execute(matrix);
 
 	timer.stop();

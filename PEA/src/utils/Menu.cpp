@@ -6,6 +6,7 @@
 #include "..\..\inc\utils\TSPsolver.hpp"
 #include "..\..\inc\utils\MatrixReader.hpp"
 #include "..\..\inc\utils\MatrixGenerator.hpp"
+#include "..\..\inc\utils\TestProvider.hpp"
 
 #include <limits>
 
@@ -27,6 +28,8 @@ void PEA::Menu::show()
 			break;
 		case ActionType::INVALID:
 			std::cout << "You entered invalid data" << std::endl;
+			break;
+		case ActionType::NO_ACTION:
 			break;
 		case ActionType::EXIT:
 		default:
@@ -55,7 +58,9 @@ PEA::ActionType PEA::Menu::selectActionType()
 	case '2':
 		return ActionType::AUTOMATIC_TESTS;
 	case '3':
-		return ActionType::EXIT;
+		return Menu::getAnswer("Are you really want to exit?")
+			? ActionType::EXIT 
+			: ActionType::NO_ACTION;
 	default:
 		return ActionType::INVALID;
 	}
@@ -98,7 +103,36 @@ void PEA::Menu::manualTests()
 void PEA::Menu::automaticTests()
 {
 	std::cout << "Automatic tests" << std::endl;
+	Algorithm algorithm = Menu::selectAlgorithm();
+	AlgorithmBase* base;
 
+	switch (algorithm)
+	{
+	case PEA::Algorithm::BRUTE_FORCE:
+		base = new BruteForce();
+		break;
+	case PEA::Algorithm::DYNAMIC_PROGRAMMING:
+		base = new DynamicProgramming();
+		break;
+	case PEA::Algorithm::BRANCH_AND_BOUND:
+		base = new BranchAndBound();
+		break;
+	case PEA::Algorithm::NOT_IMPLEMENTED:
+	default:
+		std::cout << "Not implemented" << std::endl;
+		return;
+	}
+
+	TestProvider provider;
+	std::string basePath = "C:\\Users\\szkol\\Desktop\\PEA\\PEA-Project1\\PEA\\results\\";
+
+	for (size_t i = 6; i < 13; i++)
+	{
+		long long time = provider.performTests(*base, TimeUnit::MICROSECONDS, 100, i);
+		std::cout << "finished " << i << ": " << time << std::endl;
+	}
+	
+	delete base;
 }
 
 int PEA::Menu::getNumber()
@@ -111,7 +145,7 @@ int PEA::Menu::getNumber()
 	return number;
 }
 
-PEA::ActionType PEA::Menu::getAnswer(std::string message)
+bool PEA::Menu::getAnswer(std::string message)
 {
 	std::cout << message << std::endl;
 	std::cout << "Enter [y] to confirm or [n] to cancel" << std::endl;
@@ -121,13 +155,10 @@ PEA::ActionType PEA::Menu::getAnswer(std::string message)
 	switch (answer)
 	{
 	case 'y':
-		return ActionType::YES_ANSWER;
-		break;
+		return true;
 	case 'n':
-		return ActionType::NO_ANSWER;
-		break;
 	default:
-		return ActionType::INVALID;
+		return false;
 	}
 }
 

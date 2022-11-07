@@ -6,8 +6,7 @@ namespace PEA
 	{
 		MANUAL_TESTS,
 		AUTOMATIC_TESTS,
-		YES_ANSWER,
-		NO_ANSWER,
+		NO_ACTION,
 		INVALID,
 		EXIT
 	};

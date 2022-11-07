@@ -8,25 +8,29 @@ PEA::Path* PEA::DynamicProgramming::execute(AdjanencyMatrix& matrix)
     this->allocateMemory(matrix.getVerticesNumber());
     Path* solution = this->examineNextLevel(matrix, 0, 0b1);
     this->deallocateMemory(matrix.getVerticesNumber());
+    Path* resultToReturn = new Path(*solution);
+    delete solution;
 
-	return new Path(*solution);
+	return resultToReturn;
 }
 
 void PEA::DynamicProgramming::allocateMemory(size_t verticesNumber)
 {
+    int mask = (1 << verticesNumber) - 1;
     _subsolutions = new Path ** [verticesNumber];
     for (size_t i = 0; i < verticesNumber; i++)
     {
-        _subsolutions[i] = new Path * [(1 << verticesNumber) - 1]{};
+        _subsolutions[i] = new Path * [mask]{};
     }
     _finalVerticesMask = pow(2, verticesNumber) - 1;
 }
 
 void PEA::DynamicProgramming::deallocateMemory(size_t verticesNumber)
 {
+    int mask = (1 << verticesNumber) - 1;
     for (size_t i = 0; i < verticesNumber; i++)
     {
-        for (size_t j = 0; j < (1 << verticesNumber) - 1; j++)
+        for (size_t j = 0; j < mask; j++)
         {
             delete _subsolutions[i][j];
         }
@@ -53,7 +57,6 @@ PEA::Path* PEA::DynamicProgramming::examineNextLevel(AdjanencyMatrix& matrix, in
 
     solutionToExamine = new Path();
     solutionToExamine->addVertex(-1, INT_MAX);
-    auto cost = solutionToExamine->getTotalCost();
 
     for (size_t i = 0; i < matrix.getVerticesNumber(); i++)
     {
