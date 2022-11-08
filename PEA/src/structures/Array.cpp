@@ -298,3 +298,4 @@ T* SDIZO::Array<T>::end()
 template class SDIZO::Array<int>;
 template class SDIZO::Array<bool>;
 template class SDIZO::Array<size_t>;
+template class SDIZO::Array<long long>;

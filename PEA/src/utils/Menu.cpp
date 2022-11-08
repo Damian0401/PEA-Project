@@ -7,6 +7,7 @@
 #include "..\..\inc\utils\MatrixReader.hpp"
 #include "..\..\inc\utils\MatrixGenerator.hpp"
 #include "..\..\inc\utils\TestProvider.hpp"
+#include "..\..\inc\utils\ResultWriter.hpp"
 
 #include <limits>
 
@@ -105,17 +106,21 @@ void PEA::Menu::automaticTests()
 	std::cout << "Automatic tests" << std::endl;
 	Algorithm algorithm = Menu::selectAlgorithm();
 	AlgorithmBase* base;
+	std::string fileName;
 
 	switch (algorithm)
 	{
 	case PEA::Algorithm::BRUTE_FORCE:
 		base = new BruteForce();
+		fileName = "brute-force.csv";
 		break;
 	case PEA::Algorithm::DYNAMIC_PROGRAMMING:
 		base = new DynamicProgramming();
+		fileName = "dynamic-programming.csv";
 		break;
 	case PEA::Algorithm::BRANCH_AND_BOUND:
 		base = new BranchAndBound();
+		fileName = "branch-and-bound.csv";
 		break;
 	case PEA::Algorithm::NOT_IMPLEMENTED:
 	default:
@@ -126,13 +131,33 @@ void PEA::Menu::automaticTests()
 	TestProvider provider;
 	std::string basePath = "C:\\Users\\szkol\\Desktop\\PEA\\PEA-Project1\\PEA\\results\\";
 
-	for (size_t i = 6; i < 13; i++)
+	std::cout << "Select start range" << std::endl;
+	int start = Menu::getNumber();
+
+	std::cout << "Select end range" << std::endl;
+	int end = Menu::getNumber();
+
+	if (end <= start)
 	{
-		long long time = provider.performTests(*base, TimeUnit::MICROSECONDS, 100, i);
-		std::cout << "finished " << i << ": " << time << std::endl;
+		std::cout << "Invalid range" << std::endl;
+		return;
 	}
-	
+
+	Array<size_t> vertices;
+	Array<long long> times;
+
+	for (size_t i = start; i <= end; i++)
+	{
+		vertices.addBack(i);
+		long long time = provider.performTests(*base, TimeUnit::MICROSECONDS, 100, i);
+		times.addBack(time);
+		std::cout << "finished " << i << ": " << time  << "us" << std::endl;
+	}
+
 	delete base;
+
+	ResultWriter writer(basePath);
+	writer.write(fileName, vertices, times);
 }
 
 int PEA::Menu::getNumber()
