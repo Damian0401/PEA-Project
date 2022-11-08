@@ -18,6 +18,7 @@ namespace PEA
 		static ActionType selectActionType();
 		static void manualTests();
 		static void automaticTests();
+		static void generateTests();
 		static int getNumber();
 		static bool getAnswer(std::string message);
 		static char getChar();
