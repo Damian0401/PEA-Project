@@ -47,7 +47,7 @@ PEA::ActionType PEA::Menu::selectActionType()
 {
 	std::cout << std::string(15, '-') << std::endl;
 	std::cout << "Select action:" << std::endl;
-	std::cout << "[1] - Manual tests from file" << std::endl;
+	std::cout << "[1] - Manual tests" << std::endl;
 	std::cout << "[2] - Generate tests" << std::endl;
 	std::cout << "[3] - Automatic tests" << std::endl;
 	std::cout << "[4] - Exit" << std::endl;
