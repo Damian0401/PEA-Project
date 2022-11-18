@@ -1,4 +1,4 @@
-# PEA first project
+# PEA project
 
 ## Description
 TBD.
