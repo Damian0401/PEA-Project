@@ -12,6 +12,11 @@ namespace PEA
 
 	private:
 		int calculateCost(AdjanencyMatrix& matrix, SDIZO::Array<size_t>& vertices);
+		double getRandom();
+		double calculateProbability(const int delta, const double temperature);
+		bool makeDecision(const int delta, const double temperature);
+		double probabilityOnSamples(const int delta, const double temperature, const int samples);
+		void changeOrder(SDIZO::Array<size_t>& vertices);
 
 	};
 

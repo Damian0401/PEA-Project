@@ -26,6 +26,20 @@ SDIZO::Array<T>::~Array()
 }
 
 template<typename T>
+SDIZO::Array<T>& SDIZO::Array<T>::operator=(const Array<T> other)
+{
+	this->size = other.size;
+	this->head = new T[other.size];
+
+	for (size_t i = 0; i < size; i++)
+	{
+		this->head[i] = other.head[i];
+	}
+
+	return *this;
+}
+
+template<typename T>
 void SDIZO::Array<T>::addFront(const T& data)
 {
 	T* newHead = new T[this->size + 1];

@@ -143,7 +143,7 @@ void PEA::Menu::automaticTests()
 	}
 
 	TestProvider provider;
-	std::string basePath = "C:\\Users\\szkol\\Desktop\\PEA\\PEA-Project1\\PEA\\results\\";
+	std::string basePath = "C:\\Users\\szkol\\Desktop\\PEA\\PEA-Project\\PEA\\results\\";
 
 	std::cout << "Select start range" << std::endl;
 	int start = Menu::getNumber();
@@ -248,7 +248,7 @@ char PEA::Menu::getChar()
 
 PEA::AdjanencyMatrix PEA::Menu::readMatrix(std::string fileName)
 {
-	std::string basePath = "C:\\Users\\szkol\\Desktop\\PEA\\PEA-Project1\\PEA\\data\\";
+	std::string basePath = "C:\\Users\\szkol\\Desktop\\PEA\\PEA-Project\\PEA\\data\\";
 	MatrixReader reader(basePath);
 	AdjanencyMatrix matrix = reader.read(fileName);
 

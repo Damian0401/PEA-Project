@@ -9,6 +9,7 @@ namespace SDIZO
 		Array();
 		Array(const Array<T>& origin);
 		~Array();
+		Array<T>& operator=(const Array<T> other);
 		virtual void addFront(const T& data);
 		virtual void addBack(const  T& data);
 		virtual bool addAt(const size_t& index, const T& data);
