@@ -2,6 +2,7 @@
 #include "..\..\inc\algorithms\BruteForce.hpp"
 #include "..\..\inc\algorithms\BranchAndBound.hpp"
 #include "..\..\inc\algorithms\DynamicProgramming.hpp"
+#include "..\..\inc\algorithms\SimulatedAnnealing.hpp"
 #include "..\..\inc\utils\Timer.hpp"
 #include "..\..\inc\utils\TSPsolver.hpp"
 #include "..\..\inc\utils\MatrixReader.hpp"
@@ -87,17 +88,21 @@ void PEA::Menu::manualTests()
 
 	Algorithm algorithm = Menu::selectAlgorithm();
 	TSPsolver solver;
+	TimeUnit timeUnit = TimeUnit::MICROSECONDS;
 
 	switch (algorithm)
 	{
 	case PEA::Algorithm::BRUTE_FORCE:
-		solver.solve(matrix, BruteForce(), TimeUnit::MICROSECONDS, true);
+		solver.solve(matrix, BruteForce(), timeUnit, true);
 		break;
 	case PEA::Algorithm::DYNAMIC_PROGRAMMING:
-		solver.solve(matrix, DynamicProgramming(), TimeUnit::MICROSECONDS, true);
+		solver.solve(matrix, DynamicProgramming(), timeUnit, true);
 		break;
 	case PEA::Algorithm::BRANCH_AND_BOUND:
-		solver.solve(matrix, BranchAndBound(), TimeUnit::MICROSECONDS, true);
+		solver.solve(matrix, BranchAndBound(), timeUnit, true);
+		break;
+	case PEA::Algorithm::SIMULATED_ANNEALING:
+		solver.solve(matrix, SimulatedAnnealing(), timeUnit, true);
 		break;
 	case PEA::Algorithm::NOT_IMPLEMENTED:
 	default:
@@ -126,6 +131,10 @@ void PEA::Menu::automaticTests()
 	case PEA::Algorithm::BRANCH_AND_BOUND:
 		base = new BranchAndBound();
 		fileName = "branch-and-bound.csv";
+		break;
+	case PEA::Algorithm::SIMULATED_ANNEALING:
+		base = new SimulatedAnnealing();
+		fileName = "simulated-annealing.csv";
 		break;
 	case PEA::Algorithm::NOT_IMPLEMENTED:
 	default:
@@ -178,17 +187,21 @@ void PEA::Menu::generateTests()
 
 	Algorithm algorithm = Menu::selectAlgorithm();
 	TSPsolver solver;
+	TimeUnit timeUnit = TimeUnit::MICROSECONDS;
 
 	switch (algorithm)
 	{
 	case PEA::Algorithm::BRUTE_FORCE:
-		solver.solve(matrix, BruteForce(), TimeUnit::MICROSECONDS, true);
+		solver.solve(matrix, BruteForce(), timeUnit, true);
 		break;
 	case PEA::Algorithm::DYNAMIC_PROGRAMMING:
-		solver.solve(matrix, DynamicProgramming(), TimeUnit::MICROSECONDS, true);
+		solver.solve(matrix, DynamicProgramming(), timeUnit, true);
 		break;
 	case PEA::Algorithm::BRANCH_AND_BOUND:
-		solver.solve(matrix, BranchAndBound(), TimeUnit::MICROSECONDS, true);
+		solver.solve(matrix, BranchAndBound(), timeUnit, true);
+		break;
+	case PEA::Algorithm::SIMULATED_ANNEALING:
+		solver.solve(matrix, SimulatedAnnealing(), timeUnit, true);
 		break;
 	case PEA::Algorithm::NOT_IMPLEMENTED:
 	default:
@@ -248,6 +261,7 @@ PEA::Algorithm PEA::Menu::selectAlgorithm()
 	std::cout << "[1] - Brute Force" << std::endl;
 	std::cout << "[2] - Dynamic programming" << std::endl;
 	std::cout << "[3] - Branch and Bound" << std::endl;
+	std::cout << "[4] - Simulated annealing" << std::endl;
 
 	char algorithm = Menu::getChar();
 
@@ -259,6 +273,8 @@ PEA::Algorithm PEA::Menu::selectAlgorithm()
 		return Algorithm::DYNAMIC_PROGRAMMING;
 	case '3':
 		return Algorithm::BRANCH_AND_BOUND;
+	case '4':
+		return Algorithm::SIMULATED_ANNEALING;
 	default:
 		return Algorithm::NOT_IMPLEMENTED;
 	}
