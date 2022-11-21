@@ -6,19 +6,18 @@
 
 PEA::Path* PEA::SimulatedAnnealing::execute(AdjanencyMatrix& matrix)
 {
+    size_t verticesNumber = matrix.getVerticesNumber();
     SDIZO::Array<size_t> vertices;
-    for (size_t i = 0; i < matrix.getVerticesNumber(); i++)
-    {
+    for (size_t i = 0; i < verticesNumber; i++)
         vertices.addBack(i);
-    }
+    for (size_t i = 0; i < verticesNumber; i++)
+        changeOrder(vertices);
 
     int cost = this->calculateCost(matrix, vertices);
-    double temperature = 100;
+    double temperature = 1000;
 
     while (temperature > 1)
     {
-        temperature *= 0.99;
-
         SDIZO::Array<size_t> newVertices(vertices);
         this->changeOrder(newVertices);
         int newCost = this->calculateCost(matrix, newVertices);
@@ -29,6 +28,7 @@ PEA::Path* PEA::SimulatedAnnealing::execute(AdjanencyMatrix& matrix)
 
         cost = newCost;
         vertices = newVertices;
+        temperature *= 0.995;
     }
 
     return new Path(vertices, cost);
@@ -43,7 +43,7 @@ int PEA::SimulatedAnnealing::calculateCost(AdjanencyMatrix& matrix, SDIZO::Array
     {
         result += matrix.getCost(vertices.get(i), vertices.get(i + 1));
     }
-    result += matrix.getCost(iterationNumber, 0);
+    result += matrix.getCost(vertices.get(iterationNumber), vertices.get(0));
 
     return result;
 }
