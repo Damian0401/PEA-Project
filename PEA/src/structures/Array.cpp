@@ -28,6 +28,9 @@ SDIZO::Array<T>::~Array()
 template<typename T>
 SDIZO::Array<T>& SDIZO::Array<T>::operator=(const Array<T> other)
 {
+	if (this->head != nullptr)
+		delete[] head;
+
 	this->size = other.size;
 	this->head = new T[other.size];
 
