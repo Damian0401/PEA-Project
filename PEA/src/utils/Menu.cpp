@@ -3,6 +3,7 @@
 #include "..\..\inc\algorithms\BranchAndBound.hpp"
 #include "..\..\inc\algorithms\DynamicProgramming.hpp"
 #include "..\..\inc\algorithms\SimulatedAnnealing.hpp"
+#include "..\..\inc\algorithms\TabuSearch.hpp"
 #include "..\..\inc\utils\Timer.hpp"
 #include "..\..\inc\utils\TSPsolver.hpp"
 #include "..\..\inc\utils\MatrixReader.hpp"
@@ -104,6 +105,9 @@ void PEA::Menu::manualTests()
 	case PEA::Algorithm::SIMULATED_ANNEALING:
 		solver.solve(matrix, SimulatedAnnealing(), timeUnit, true);
 		break;
+	case PEA::Algorithm::TABU_SEARCH:
+		solver.solve(matrix, TabuSearch(), timeUnit, true);
+		break;
 	case PEA::Algorithm::NOT_IMPLEMENTED:
 	default:
 		std::cout << "Not implemented" << std::endl;
@@ -135,6 +139,10 @@ void PEA::Menu::automaticTests()
 	case PEA::Algorithm::SIMULATED_ANNEALING:
 		base = new SimulatedAnnealing();
 		fileName = "simulated-annealing.csv";
+		break;
+	case PEA::Algorithm::TABU_SEARCH:
+		base = new SimulatedAnnealing();
+		fileName = "tabu-search.csv";
 		break;
 	case PEA::Algorithm::NOT_IMPLEMENTED:
 	default:
@@ -203,6 +211,9 @@ void PEA::Menu::generateTests()
 	case PEA::Algorithm::SIMULATED_ANNEALING:
 		solver.solve(matrix, SimulatedAnnealing(), timeUnit, true);
 		break;
+	case PEA::Algorithm::TABU_SEARCH:
+		solver.solve(matrix, TabuSearch(), timeUnit, true);
+		break;
 	case PEA::Algorithm::NOT_IMPLEMENTED:
 	default:
 		std::cout << "Not implemented" << std::endl;
@@ -262,6 +273,7 @@ PEA::Algorithm PEA::Menu::selectAlgorithm()
 	std::cout << "[2] - Dynamic programming" << std::endl;
 	std::cout << "[3] - Branch and Bound" << std::endl;
 	std::cout << "[4] - Simulated annealing" << std::endl;
+	std::cout << "[5] - Tabu search" << std::endl;
 
 	char algorithm = Menu::getChar();
 
@@ -275,6 +287,8 @@ PEA::Algorithm PEA::Menu::selectAlgorithm()
 		return Algorithm::BRANCH_AND_BOUND;
 	case '4':
 		return Algorithm::SIMULATED_ANNEALING;
+	case '5':
+		return Algorithm::TABU_SEARCH;
 	default:
 		return Algorithm::NOT_IMPLEMENTED;
 	}

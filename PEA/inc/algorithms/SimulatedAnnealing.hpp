@@ -17,6 +17,7 @@ namespace PEA
 		bool makeDecision(const int delta, const double temperature);
 		double probabilityOnSamples(const int delta, const double temperature, const int samples);
 		void changeOrder(SDIZO::Array<size_t>& vertices);
+		SDIZO::Array<size_t> getInitialSolution(size_t verticesNumber);
 
 	};
 

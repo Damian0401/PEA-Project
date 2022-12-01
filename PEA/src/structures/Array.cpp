@@ -268,7 +268,7 @@ void SDIZO::Array<T>::swap(size_t first, size_t second)
 	if (first >= this->size || second >= this->size)
 		throw new std::out_of_range("index out of range");
 
-	int temp = this->head[first];
+	T temp = this->head[first];
 	this->head[first] = this->head[second];
 	this->head[second] = temp;
 }
@@ -316,3 +316,4 @@ template class SDIZO::Array<int>;
 template class SDIZO::Array<bool>;
 template class SDIZO::Array<size_t>;
 template class SDIZO::Array<long long>;
+template class SDIZO::Array<std::string>;
