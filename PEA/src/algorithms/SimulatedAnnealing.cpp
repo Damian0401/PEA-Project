@@ -10,7 +10,7 @@ PEA::Path* PEA::SimulatedAnnealing::execute(AdjanencyMatrix& matrix)
     SDIZO::Array<size_t> vertices = this->getInitialSolution(verticesNumber);
 
     int cost = this->calculateCost(matrix, vertices);
-    double temperature = 1000;
+    double temperature = _startTemperature;
 
     SDIZO::Array<size_t> bestSolution = vertices;
     int bestCost = cost;
@@ -27,7 +27,7 @@ PEA::Path* PEA::SimulatedAnnealing::execute(AdjanencyMatrix& matrix)
 
         cost = newCost;
         vertices = newVertices;
-        temperature *= 0.999;
+        temperature *= _coolingRatio;
 
         if (cost < bestCost)
         {

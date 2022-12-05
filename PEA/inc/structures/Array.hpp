@@ -26,6 +26,7 @@ namespace SDIZO
 		virtual void clear();
 		virtual T* begin();
 		virtual T* end();
+		virtual bool contains(const T& element);
 	private:
 		T* head;
 		size_t size;

@@ -1,6 +1,7 @@
 #include "..\..\inc\algorithms\TabuSearch.hpp"
 
 #include <random>
+#include <iostream>
 
 #include "../../inc/utils/RandomGenerator.hpp"
 
@@ -11,12 +12,51 @@ PEA::Path* PEA::TabuSearch::execute(AdjanencyMatrix& matrix)
     std::string currentPath = this->getInitialSolution(verticesNumber);
     int currentCost = this->calculateCost(matrix, currentPath);
 
-    // TODO
+    std::string bestPath = currentPath;
+    int bestCost = currentCost;
 
-	return new Path(SDIZO::Array<size_t>(), -1);
+    SDIZO::Array<std::string> tabuList;
+    int sameSolutionCounter = 0;
+
+    for (size_t i = 0; i < _iterationNumber; i++)
+    {
+        SDIZO::Array<std::string> neighbours = this->generateNeighbours(currentPath);
+        currentPath = neighbours.get(0);
+        currentCost = this->calculateCost(matrix, currentPath);
+
+        for (size_t i = 1; i < neighbours.getSize(); i++)
+        {
+            std::string candidatePath = neighbours.get(i);
+
+            if (tabuList.contains(candidatePath))
+                continue;
+
+            int candidateCost = this->calculateCost(matrix, candidatePath);
+            if (candidateCost < currentCost)
+            {
+                currentCost = candidateCost;
+                currentPath = candidatePath;
+            }
+        }
+
+        if (currentCost < bestCost)
+        {
+            bestPath = currentPath;
+            bestCost = currentCost;
+            sameSolutionCounter = 0;
+        }
+
+        this->updateTabuList(currentPath, tabuList);
+        if (sameSolutionCounter == _sameSolutionLimit)
+            break;
+
+        sameSolutionCounter++;
+    }
+
+    return this->createResult(bestPath, bestCost);
 }
 
-int PEA::TabuSearch::calculateCost(AdjanencyMatrix& matrix, std::string vertices)
+int PEA::TabuSearch::calculateCost(AdjanencyMatrix& matrix, const std::string& vertices)
 {
     int result = 0;
     int iterationNumber = matrix.getVerticesNumber() - 1;
@@ -44,7 +84,6 @@ std::string PEA::TabuSearch::getInitialSolution(size_t verticesNumber)
         this->swapTwoRandomVertices(solution);
     }
 
-
     return solution;
 }
 
@@ -62,5 +101,60 @@ void PEA::TabuSearch::swapTwoVertices(std::string& vertices, size_t firstIndex, 
     vertices[firstIndex] = vertices[secondIndex];
     vertices[secondIndex] = temp;
 }
+
+PEA::Path* PEA::TabuSearch::createResult(const std::string& vertices, int totalCost)
+{
+    SDIZO::Array<size_t> verticesArray;
+    for (size_t i = 0; i < vertices.size(); i++)
+    {
+        verticesArray.addBack(vertices[i]);
+    }
+
+    return new Path(verticesArray, totalCost);
+}
+
+SDIZO::Array<std::string> PEA::TabuSearch::generateNeighbours(std::string vertices)
+{
+    SDIZO::Array<std::string> neighbours;
+
+    for (size_t i = 0; i < _neighbourhoodSize; i++)
+    {
+        size_t firstNode = 0;
+        size_t secondNode = 0;
+
+        while (firstNode == secondNode)
+        {
+            firstNode = RandomGenerator::generate(1, vertices.size() - 1);
+            secondNode = RandomGenerator::generate(1, vertices.size() - 1);
+        }
+
+        if (firstNode > secondNode)
+        {
+            int swap = firstNode;
+            firstNode = secondNode;
+            secondNode = swap;
+        }
+
+        std::string neighbour = vertices;
+        int index = firstNode;
+        for (int i = secondNode; i >= firstNode; i--)
+        {
+            neighbour[i] = vertices[index];
+            index++;
+        }
+        neighbours.addFront(neighbour);
+    }
+
+    return neighbours;
+}
+
+void PEA::TabuSearch::updateTabuList(const std::string& currentPath, SDIZO::Array<std::string>& tabuList)
+{
+    tabuList.addFront(currentPath);
+
+    if (tabuList.getSize() > _maxTabuListSize)
+        tabuList.removeBack();
+}
+
 
 

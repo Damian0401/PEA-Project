@@ -312,6 +312,21 @@ T* SDIZO::Array<T>::end()
 	return this->head + this->size;
 }
 
+template<typename T>
+bool SDIZO::Array<T>::contains(const T& element)
+{
+	if (this->size == 0)
+		return false;
+
+	for (size_t i = 0; i < this->size; i++)
+	{
+		if (this->head[i] == element)
+			return true;
+	}
+
+	return false;
+}
+
 template class SDIZO::Array<int>;
 template class SDIZO::Array<bool>;
 template class SDIZO::Array<size_t>;
