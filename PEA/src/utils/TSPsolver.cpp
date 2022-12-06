@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-long long PEA::TSPsolver::solve(AdjanencyMatrix& matrix, AlgorithmBase& algorithm, TimeUnit unit, bool display)
+long long PEA::TSPsolver::solve(AdjacencyMatrix& matrix, AlgorithmBase& algorithm, TimeUnit unit, bool display)
 {
 	Timer timer;
 	timer.start();
@@ -21,4 +21,20 @@ long long PEA::TSPsolver::solve(AdjanencyMatrix& matrix, AlgorithmBase& algorith
 
 	delete path;
 	return time;
+}
+
+PEA::Result PEA::TSPsolver::solveWithResult(AdjacencyMatrix& matrix, AlgorithmBase& algorithm, TimeUnit unit)
+{
+	Timer timer;
+	timer.start();
+
+	auto path = algorithm.execute(matrix);
+
+	timer.stop();
+	auto time = timer.getTime(unit);
+
+	Path copyOfPath(*path);
+	delete path;
+	
+	return Result(copyOfPath, time);
 }

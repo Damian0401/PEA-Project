@@ -13,7 +13,7 @@ PEA::MatrixReader::MatrixReader(std::string basePath)
 {
 }
 
-PEA::AdjanencyMatrix PEA::MatrixReader::read(std::string fileName, bool useBasePath)
+PEA::AdjacencyMatrix PEA::MatrixReader::read(std::string fileName, bool useBasePath)
 {
 	if (useBasePath)
 		fileName = _basePath + fileName;
@@ -34,7 +34,7 @@ PEA::AdjanencyMatrix PEA::MatrixReader::read(std::string fileName, bool useBaseP
 		file >> data[i];
 	}
 
-	AdjanencyMatrix matrix(verticesNumber, data);
+	AdjacencyMatrix matrix(verticesNumber, data);
 	delete[] data;
 
 	return matrix;

@@ -3,7 +3,7 @@
 #include <climits>
 #include <cmath>
 
-PEA::Path* PEA::DynamicProgramming::execute(AdjanencyMatrix& matrix)
+PEA::Path* PEA::DynamicProgramming::execute(AdjacencyMatrix& matrix)
 {
     this->allocateMemory(matrix.getVerticesNumber());
     Path* solution = this->examineNextLevel(matrix, 0, 0b1);
@@ -42,7 +42,7 @@ void PEA::DynamicProgramming::deallocateMemory(size_t verticesNumber)
     _finalVerticesMask = 0;
 }
 
-PEA::Path* PEA::DynamicProgramming::examineNextLevel(AdjanencyMatrix& matrix, int currentVertex, int visitedVerticesMask)
+PEA::Path* PEA::DynamicProgramming::examineNextLevel(AdjacencyMatrix& matrix, int currentVertex, int visitedVerticesMask)
 {
     if (visitedVerticesMask == _finalVerticesMask)
     {

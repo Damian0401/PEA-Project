@@ -19,10 +19,11 @@ namespace PEA
 		static void manualTests();
 		static void automaticTests();
 		static void generateTests();
+		static void extendedTests();
 		static int getNumber();
 		static bool getAnswer(std::string message);
 		static char getChar();
-		static AdjanencyMatrix readMatrix(std::string fileName);
+		static AdjacencyMatrix readMatrix(std::string fileName);
 		static Algorithm selectAlgorithm();
 	};
 }

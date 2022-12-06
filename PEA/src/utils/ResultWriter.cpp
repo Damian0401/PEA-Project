@@ -28,3 +28,19 @@ void PEA::ResultWriter::write(std::string fileName, Array<size_t> vertices, Arra
 
 	file.close();
 }
+
+void PEA::ResultWriter::writeExtended(const std::string& fileName, Array<std::string>& names, 
+	Array<double>& averageErros, Array<long long>& averageTimes)
+{
+	std::ofstream file(_basePath + fileName);
+	std::string header = "instance name;average time;average error";
+
+	file << header << std::endl;
+	for (size_t i = 0; i < names.getSize(); i++)
+	{
+		file << names.get(i) << ';' << averageTimes.get(i) 
+			<< ';' << averageErros.get(i) << std::endl;
+	}
+
+	file.close();
+}

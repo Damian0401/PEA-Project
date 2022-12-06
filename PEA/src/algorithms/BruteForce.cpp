@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-PEA::Path* PEA::BruteForce::execute(AdjanencyMatrix& matrix)
+PEA::Path* PEA::BruteForce::execute(AdjacencyMatrix& matrix)
 {
     SDIZO::Array<size_t> numbers;
     for (size_t i = 0; i < matrix.getVerticesNumber(); i++)
@@ -56,7 +56,7 @@ bool PEA::BruteForce::nextPermutation(SDIZO::Array<size_t>& array)
     }
 }
 
-int PEA::BruteForce::getCost(SDIZO::Array<size_t>& numbers, PEA::AdjanencyMatrix& matrix)
+int PEA::BruteForce::getCost(SDIZO::Array<size_t>& numbers, PEA::AdjacencyMatrix& matrix)
 {
     int cost = 0;
     int size = numbers.getSize();

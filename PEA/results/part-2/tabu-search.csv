@@ -1,0 +1,8 @@
+instance name;average time;average error
+graph_17.txt;4996;0
+graph_26.txt;6412;0
+tsp_34.txt;11174;27.7372
+tsp_39.txt;14710;30.1111
+graph_42.txt;9761;0.987124
+graph_48.txt;12382;1.61412
+tsp_70.txt;13550;26.9658

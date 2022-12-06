@@ -5,7 +5,7 @@
 
 #include "../../inc/utils/RandomGenerator.hpp"
 
-PEA::Path* PEA::TabuSearch::execute(AdjanencyMatrix& matrix)
+PEA::Path* PEA::TabuSearch::execute(AdjacencyMatrix& matrix)
 {
     size_t verticesNumber = matrix.getVerticesNumber();
 
@@ -56,7 +56,7 @@ PEA::Path* PEA::TabuSearch::execute(AdjanencyMatrix& matrix)
     return this->createResult(bestPath, bestCost);
 }
 
-int PEA::TabuSearch::calculateCost(AdjanencyMatrix& matrix, const std::string& vertices)
+int PEA::TabuSearch::calculateCost(AdjacencyMatrix& matrix, const std::string& vertices)
 {
     int result = 0;
     int iterationNumber = matrix.getVerticesNumber() - 1;

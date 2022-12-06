@@ -9,7 +9,7 @@ namespace PEA
 	{
 	public:
 		virtual ~AlgorithmBase() = default;
-		virtual Path* execute(AdjanencyMatrix& matrix) = 0;
+		virtual Path* execute(AdjacencyMatrix& matrix) = 0;
 
 	private:
 

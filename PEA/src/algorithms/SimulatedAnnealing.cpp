@@ -4,7 +4,7 @@
 #include <cmath>
 #include <iostream>
 
-PEA::Path* PEA::SimulatedAnnealing::execute(AdjanencyMatrix& matrix)
+PEA::Path* PEA::SimulatedAnnealing::execute(AdjacencyMatrix& matrix)
 {
     size_t verticesNumber = matrix.getVerticesNumber();
     SDIZO::Array<size_t> vertices = this->getInitialSolution(verticesNumber);
@@ -39,7 +39,7 @@ PEA::Path* PEA::SimulatedAnnealing::execute(AdjanencyMatrix& matrix)
     return new Path(bestSolution, bestCost);
 }
 
-int PEA::SimulatedAnnealing::calculateCost(AdjanencyMatrix& matrix, SDIZO::Array<size_t>& vertices)
+int PEA::SimulatedAnnealing::calculateCost(AdjacencyMatrix& matrix, SDIZO::Array<size_t>& vertices)
 {
     int result = 0;
     int iterationNumber = matrix.getVerticesNumber() - 1;

@@ -3,7 +3,7 @@
 #include <random>
 
 
-PEA::AdjanencyMatrix PEA::MatrixGenerator::generate(size_t verticesNumber)
+PEA::AdjacencyMatrix PEA::MatrixGenerator::generate(size_t verticesNumber)
 {
 	size_t dataSize = verticesNumber * verticesNumber;
 	int* data = new int[dataSize];
@@ -28,7 +28,7 @@ PEA::AdjanencyMatrix PEA::MatrixGenerator::generate(size_t verticesNumber)
 		data[i] = values(gen);
 	}
 
-	AdjanencyMatrix matrix(verticesNumber, data);
+	AdjacencyMatrix matrix(verticesNumber, data);
 	delete[] data;
 
 	return matrix;

@@ -4,7 +4,7 @@
 #include <cmath>
 
 
-PEA::Path* PEA::BranchAndBound::execute(AdjanencyMatrix& matrix)
+PEA::Path* PEA::BranchAndBound::execute(AdjacencyMatrix& matrix)
 {
 	size_t verticesNumber = matrix.getVerticesNumber();
 	size_t* currentPath = this->allocateMemory(verticesNumber);
@@ -56,7 +56,7 @@ PEA::Path* PEA::BranchAndBound::getFinalPath()
 	return path;
 }
 
-void PEA::BranchAndBound::examineNextLevel(AdjanencyMatrix& matrix, int currentCost, size_t currentLevel, size_t* currentPath)
+void PEA::BranchAndBound::examineNextLevel(AdjacencyMatrix& matrix, int currentCost, size_t currentLevel, size_t* currentPath)
 {
 	if (currentLevel == _verticesNumber)
 	{

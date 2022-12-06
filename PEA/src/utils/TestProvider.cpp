@@ -13,9 +13,31 @@ long long PEA::TestProvider::performTests(AlgorithmBase& algorithm, TimeUnit tim
 
 	for (size_t i = 0; i < repeatsNumber; i++)
 	{
-		AdjanencyMatrix matrix = generator.generate(verticesNumber);
+		AdjacencyMatrix matrix = generator.generate(verticesNumber);
 		time += solver.solve(matrix, algorithm, timeUnit);
 	}
 
 	return time / repeatsNumber;
+}
+
+PEA::TestResult PEA::TestProvider::performExtendedTests(AlgorithmBase& algorithm, 
+	AdjacencyMatrix& matrix, int optimalSolution, TimeUnit timeUnit, size_t repeatsNumber)
+{
+	TSPsolver solver;
+	int totalCost = 0;
+	long long totalTime = 0;
+
+	for (size_t i = 0; i < repeatsNumber; i++)
+	{
+		auto result = solver.solveWithResult(matrix, algorithm, timeUnit);
+		totalCost += result.path.getTotalCost();
+		totalTime += result.time;
+	}
+
+	long long averageTime = totalTime / repeatsNumber;
+	double averageCost = (double)totalCost / repeatsNumber;
+	double averageError = (averageCost / optimalSolution - 1) * 100;
+
+
+	return TestResult(averageTime, averageError);
 }

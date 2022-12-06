@@ -10,6 +10,7 @@
 #include "..\..\inc\utils\MatrixGenerator.hpp"
 #include "..\..\inc\utils\TestProvider.hpp"
 #include "..\..\inc\utils\ResultWriter.hpp"
+#include "..\..\inc\structures\Instance.hpp"
 
 #include <limits>
 
@@ -32,6 +33,9 @@ void PEA::Menu::show()
 		case ActionType::AUTOMATIC_TESTS:
 			Menu::automaticTests();
 			break;
+		case ActionType::EXTENDED_TESTS:
+			Menu::extendedTests();
+			break;
 		case ActionType::INVALID:
 			std::cout << "You entered invalid data" << std::endl;
 			break;
@@ -52,7 +56,8 @@ PEA::ActionType PEA::Menu::selectActionType()
 	std::cout << "[1] - Manual tests" << std::endl;
 	std::cout << "[2] - Generate tests" << std::endl;
 	std::cout << "[3] - Automatic tests" << std::endl;
-	std::cout << "[4] - Exit" << std::endl;
+	std::cout << "[4] - Extended tests" << std::endl;
+	std::cout << "[0] - Exit" << std::endl;
 
 	char actionType = Menu::getChar();
 
@@ -67,6 +72,8 @@ PEA::ActionType PEA::Menu::selectActionType()
 	case '3':
 		return ActionType::AUTOMATIC_TESTS;
 	case '4':
+		return ActionType::EXTENDED_TESTS;
+	case '0':
 		return Menu::getAnswer("Are you really want to exit?")
 			? ActionType::EXIT 
 			: ActionType::NO_ACTION;
@@ -83,7 +90,7 @@ void PEA::Menu::manualTests()
 	std::string fileName;
 	std::cin >> fileName;
 
-	AdjanencyMatrix matrix = Menu::readMatrix(fileName);
+	AdjacencyMatrix matrix = Menu::readMatrix(fileName);
 	std::cout << "Size: " << matrix.getVerticesNumber() << std::endl;
 	matrix.display();
 
@@ -151,7 +158,7 @@ void PEA::Menu::automaticTests()
 	}
 
 	TestProvider provider;
-	std::string basePath = "C:\\Users\\szkol\\Desktop\\PEA\\PEA-Project\\PEA\\results\\";
+	std::string basePath = "C:\\Users\\szkol\\Desktop\\PEA\\PEA-Project\\PEA\\results\\part-1\\";
 
 	std::cout << "Select start range" << std::endl;
 	int start = Menu::getNumber();
@@ -190,7 +197,7 @@ void PEA::Menu::generateTests()
 	int verticesNumber = Menu::getNumber();
 
 	MatrixGenerator generator;
-	AdjanencyMatrix matrix = generator.generate(verticesNumber);
+	AdjacencyMatrix matrix = generator.generate(verticesNumber);
 	matrix.display();
 
 	Algorithm algorithm = Menu::selectAlgorithm();
@@ -219,6 +226,57 @@ void PEA::Menu::generateTests()
 		std::cout << "Not implemented" << std::endl;
 		break;
 	}
+}
+
+void PEA::Menu::extendedTests()
+{
+	int instancesNumber = 7;
+	Instance* instances = new Instance[]{
+		Instance(39, "graph_17.txt"),
+		Instance(937, "graph_26.txt"),
+		Instance(1286, "tsp_34.txt"),
+		Instance(1530, "tsp_39.txt"),
+		Instance(699, "graph_42.txt"),
+		Instance(33523, "graph_48.txt"),
+		Instance(38673, "tsp_70.txt"),
+	};
+
+	std::string basePath = "C:\\Users\\szkol\\Desktop\\PEA\\PEA-Project\\PEA\\results\\part-2\\";
+	TestProvider provider;
+	TimeUnit timeUnit = TimeUnit::MILLISECONDS;
+	ResultWriter writer(basePath);
+	int repeatsNumber = 10;
+
+	SDIZO::Array<std::string> names;
+	SDIZO::Array<double> averageErrors;
+	SDIZO::Array<long long> averageTimes;
+	for (size_t i = 0; i < instancesNumber; i++)
+	{
+		AdjacencyMatrix matrix = Menu::readMatrix(instances[i].fileName);
+		auto result = provider.performExtendedTests(SimulatedAnnealing(), matrix,
+			instances[i].optimalCost, timeUnit, repeatsNumber);
+		names.addBack(instances[i].fileName);
+		averageTimes.addBack(result.averageTime);
+		averageErrors.addBack(result.averageError);
+		std::cout << "Done." << std::endl;
+	}
+	writer.writeExtended("simulated-annealing.csv", names, averageErrors, averageTimes);
+
+	averageErrors.clear();
+	averageTimes.clear();
+
+	for (size_t i = 0; i < instancesNumber; i++)
+	{
+		AdjacencyMatrix matrix = Menu::readMatrix(instances[i].fileName);
+		auto result = provider.performExtendedTests(TabuSearch(), matrix,
+			instances[i].optimalCost, timeUnit, repeatsNumber);
+		averageTimes.addBack(result.averageTime);
+		averageErrors.addBack(result.averageError);
+		std::cout << "Done." << std::endl;
+	}
+	writer.writeExtended("tabu-search.csv", names, averageErrors, averageTimes);
+
+	delete[] instances;
 }
 
 int PEA::Menu::getNumber()
@@ -257,11 +315,11 @@ char PEA::Menu::getChar()
 	return answer;
 }
 
-PEA::AdjanencyMatrix PEA::Menu::readMatrix(std::string fileName)
+PEA::AdjacencyMatrix PEA::Menu::readMatrix(std::string fileName)
 {
 	std::string basePath = "C:\\Users\\szkol\\Desktop\\PEA\\PEA-Project\\PEA\\data\\";
 	MatrixReader reader(basePath);
-	AdjanencyMatrix matrix = reader.read(fileName);
+	AdjacencyMatrix matrix = reader.read(fileName);
 
 	return matrix;
 }

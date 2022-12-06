@@ -9,7 +9,7 @@ namespace PEA
 	class BranchAndBound : public AlgorithmBase
 	{
 	public:
-		Path* execute(AdjanencyMatrix& matrix) override;
+		Path* execute(AdjacencyMatrix& matrix) override;
 
 	private:
 		int _finalCost = INT_MAX;
@@ -20,6 +20,6 @@ namespace PEA
 		size_t* allocateMemory(size_t verticesNumber);
 		void deallocateMemory(size_t* currentPath);
 		Path* getFinalPath();
-		void examineNextLevel(AdjanencyMatrix& matrix, int currentCost, size_t currentLevel, size_t* currentPath);
+		void examineNextLevel(AdjacencyMatrix& matrix, int currentCost, size_t currentLevel, size_t* currentPath);
 	};
 }

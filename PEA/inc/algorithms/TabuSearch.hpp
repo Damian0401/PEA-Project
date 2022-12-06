@@ -10,15 +10,15 @@ namespace PEA
 	class TabuSearch : public AlgorithmBase
 	{
 	public:
-		Path* execute(AdjanencyMatrix& matrix) override;
+		Path* execute(AdjacencyMatrix& matrix) override;
 
 	private:
-		size_t _iterationNumber = 5000;
-		size_t _maxTabuListSize = 500;
-		size_t _sameSolutionLimit = 100;
+		size_t _iterationNumber = 3000;
+		size_t _maxTabuListSize = 200;
+		size_t _sameSolutionLimit = 0.20 * _iterationNumber;
 		size_t _neighbourhoodSize = 100;
 
-		int calculateCost(AdjanencyMatrix& matrix, const std::string& vertices);
+		int calculateCost(AdjacencyMatrix& matrix, const std::string& vertices);
 		std::string getInitialSolution(size_t verticesNumber);
 		void swapTwoRandomVertices(std::string& vertices);
 		void swapTwoVertices(std::string& vertices, 

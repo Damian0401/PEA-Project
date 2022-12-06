@@ -2,12 +2,12 @@
 
 namespace PEA {
 
-	class AdjanencyMatrix
+	class AdjacencyMatrix
 	{
 	public:
-		AdjanencyMatrix(size_t verticesNumber, int* data);
-		AdjanencyMatrix(const AdjanencyMatrix& origin);
-		~AdjanencyMatrix();
+		AdjacencyMatrix(size_t verticesNumber, int* data);
+		AdjacencyMatrix(const AdjacencyMatrix& origin);
+		~AdjacencyMatrix();
 
 		void display();
 		int** getRoot();

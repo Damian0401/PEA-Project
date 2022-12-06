@@ -3,26 +3,26 @@
 #include <iostream>
 #include <iomanip>
 
-PEA::AdjanencyMatrix::AdjanencyMatrix(size_t verticesNumber, int* data)
+PEA::AdjacencyMatrix::AdjacencyMatrix(size_t verticesNumber, int* data)
 	: _verticesNumber(verticesNumber)
 {
 	this->allocateMemory();
 	this->insertData(data);
 }
 
-PEA::AdjanencyMatrix::AdjanencyMatrix(const AdjanencyMatrix& origin)
+PEA::AdjacencyMatrix::AdjacencyMatrix(const AdjacencyMatrix& origin)
 	: _verticesNumber(origin._verticesNumber)
 {
 	this->allocateMemory();
 	this->copyData(origin._root);
 }
 
-PEA::AdjanencyMatrix::~AdjanencyMatrix()
+PEA::AdjacencyMatrix::~AdjacencyMatrix()
 {
 	this->deallocateMemory();
 }
 
-void PEA::AdjanencyMatrix::display()
+void PEA::AdjacencyMatrix::display()
 {
 	for (size_t i = 0; i < _verticesNumber; i++)
 	{
@@ -35,17 +35,17 @@ void PEA::AdjanencyMatrix::display()
 	}
 }
 
-int** PEA::AdjanencyMatrix::getRoot()
+int** PEA::AdjacencyMatrix::getRoot()
 {
 	return _root;
 }
 
-size_t PEA::AdjanencyMatrix::getVerticesNumber()
+size_t PEA::AdjacencyMatrix::getVerticesNumber()
 {
 	return _verticesNumber;
 }
 
-void PEA::AdjanencyMatrix::allocateMemory()
+void PEA::AdjacencyMatrix::allocateMemory()
 {
 	if (_verticesNumber == 0 || _root != nullptr)
 		throw new std::runtime_error("Unable to allocate memory");
@@ -56,7 +56,7 @@ void PEA::AdjanencyMatrix::allocateMemory()
 	}
 }
 
-void PEA::AdjanencyMatrix::insertData(int* data)
+void PEA::AdjacencyMatrix::insertData(int* data)
 {
 	if (_verticesNumber == 0 || _root == nullptr)
 		throw new std::runtime_error("Unable to insert data to empty matrix");
@@ -72,7 +72,7 @@ void PEA::AdjanencyMatrix::insertData(int* data)
 	}
 }
 
-void PEA::AdjanencyMatrix::deallocateMemory()
+void PEA::AdjacencyMatrix::deallocateMemory()
 {
 	if (_root == nullptr) 
 		return;
@@ -85,7 +85,7 @@ void PEA::AdjanencyMatrix::deallocateMemory()
 	_root = nullptr;
 }
 
-int PEA::AdjanencyMatrix::getCost(size_t from, size_t to)
+int PEA::AdjacencyMatrix::getCost(size_t from, size_t to)
 {
 	if (from >= _verticesNumber || to >= _verticesNumber)
 		throw new std::out_of_range("Invalid vertex index");
@@ -93,7 +93,7 @@ int PEA::AdjanencyMatrix::getCost(size_t from, size_t to)
 	return _root[from][to];
 }
 
-void PEA::AdjanencyMatrix::setCost(size_t from, size_t to, int cost)
+void PEA::AdjacencyMatrix::setCost(size_t from, size_t to, int cost)
 {
 	if (from >= _verticesNumber || to >= _verticesNumber)
 		throw new std::out_of_range("Invalid vertex index");
@@ -101,7 +101,7 @@ void PEA::AdjanencyMatrix::setCost(size_t from, size_t to, int cost)
 	_root[from][to] = cost;
 }
 
-void PEA::AdjanencyMatrix::copyData(int** data)
+void PEA::AdjacencyMatrix::copyData(int** data)
 {
 	for (size_t i = 0; i < _verticesNumber; i++)
 	{

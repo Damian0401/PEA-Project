@@ -8,10 +8,10 @@ namespace PEA
 	class BruteForce : public AlgorithmBase
 	{
 	public:
-		Path* execute(AdjanencyMatrix& matrix) override;
+		Path* execute(AdjacencyMatrix& matrix) override;
 
 	private:
 		bool nextPermutation(SDIZO::Array<size_t>& array);
-		int getCost(SDIZO::Array<size_t>& numbers, PEA::AdjanencyMatrix& matrix);
+		int getCost(SDIZO::Array<size_t>& numbers, PEA::AdjacencyMatrix& matrix);
 	};
 }

@@ -11,7 +11,7 @@ namespace PEA
 	public:
 		MatrixReader();
 		MatrixReader(std::string basePath);
-		AdjanencyMatrix read(std::string fileName, bool useBasePath = true);
+		AdjacencyMatrix read(std::string fileName, bool useBasePath = true);
 
 	private:
 		std::string _basePath;

@@ -297,6 +297,7 @@ void SDIZO::Array<T>::clear()
 		return;
 
 	delete[] this->head;
+	this->head = nullptr;
 	this->size = 0;
 }
 
@@ -328,6 +329,7 @@ bool SDIZO::Array<T>::contains(const T& element)
 }
 
 template class SDIZO::Array<int>;
+template class SDIZO::Array<double>;
 template class SDIZO::Array<bool>;
 template class SDIZO::Array<size_t>;
 template class SDIZO::Array<long long>;

@@ -7,7 +7,7 @@ namespace PEA
 	class DynamicProgramming : public AlgorithmBase
 	{
 	public:
-		Path* execute(AdjanencyMatrix& matrix) override;
+		Path* execute(AdjacencyMatrix& matrix) override;
 
 	private:
 		Path*** _subsolutions;
@@ -15,6 +15,6 @@ namespace PEA
 
 		void allocateMemory(size_t verticesNumber);
 		void deallocateMemory(size_t verticesNumber);
-		Path* examineNextLevel(AdjanencyMatrix& matrix, int currentVertex, int visitedVerticesMask);
+		Path* examineNextLevel(AdjacencyMatrix& matrix, int currentVertex, int visitedVerticesMask);
 	};
 }
