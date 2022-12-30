@@ -16,7 +16,7 @@ namespace PEA
 	public:
 		long long performTests(AlgorithmBase& algorithm, 
 			TimeUnit timeUnit, size_t repeatsNumber, size_t verticesNumber);
-		TestResult performExtendedTests(AlgorithmBase& algorithm, AdjacencyMatrix& matrix,
+		TestResult performExtendedTests(AlgorithmBase& algorithm, AdjacencyMatrix& matrix, 
 			int optimalSotution, TimeUnit timeUnit, size_t repeatsNumber);
 
 	private:

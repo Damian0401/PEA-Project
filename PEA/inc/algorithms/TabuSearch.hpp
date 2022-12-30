@@ -15,7 +15,7 @@ namespace PEA
 	private:
 		size_t _iterationNumber = 3000;
 		size_t _maxTabuListSize = 200;
-		size_t _sameSolutionLimit = 0.20 * _iterationNumber;
+		size_t _sameSolutionLimit = 0.3 * _iterationNumber;
 		size_t _neighbourhoodSize = 100;
 
 		int calculateCost(AdjacencyMatrix& matrix, const std::string& vertices);

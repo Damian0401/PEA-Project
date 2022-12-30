@@ -1,8 +1,8 @@
-instance name;average time;average error
-graph_17.txt;252;0
-graph_26.txt;1294;3.8207
-tsp_34.txt;1893;15.0855
-tsp_39.txt;2086;15.549
-graph_42.txt;1559;12.0029
-graph_48.txt;5232;11.4551
-tsp_70.txt;6276;10.5236
+vertices;time
+20;1184
+30;1699
+40;2198
+50;2645
+60;3120
+70;3642
+80;3974

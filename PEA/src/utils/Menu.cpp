@@ -231,14 +231,8 @@ void PEA::Menu::generateTests()
 void PEA::Menu::extendedTests()
 {
 	int instancesNumber = 7;
-	Instance* instances = new Instance[]{
-		Instance(39, "graph_17.txt"),
-		Instance(937, "graph_26.txt"),
-		Instance(1286, "tsp_34.txt"),
-		Instance(1530, "tsp_39.txt"),
-		Instance(699, "graph_42.txt"),
-		Instance(33523, "graph_48.txt"),
-		Instance(38673, "tsp_70.txt"),
+	int* instances = new int[]{
+		20, 30, 40, 50, 60, 70, 80
 	};
 
 	std::string basePath = "C:\\Users\\szkol\\Desktop\\PEA\\PEA-Project\\PEA\\results\\part-2\\";
@@ -247,34 +241,28 @@ void PEA::Menu::extendedTests()
 	ResultWriter writer(basePath);
 	int repeatsNumber = 10;
 
-	SDIZO::Array<std::string> names;
-	SDIZO::Array<double> averageErrors;
+	SDIZO::Array<size_t> verticesNumbers;
 	SDIZO::Array<long long> averageTimes;
 	for (size_t i = 0; i < instancesNumber; i++)
 	{
-		AdjacencyMatrix matrix = Menu::readMatrix(instances[i].fileName);
-		auto result = provider.performExtendedTests(SimulatedAnnealing(), matrix,
-			instances[i].optimalCost, timeUnit, repeatsNumber);
-		names.addBack(instances[i].fileName);
-		averageTimes.addBack(result.averageTime);
-		averageErrors.addBack(result.averageError);
+		auto result = provider.performTests(SimulatedAnnealing(), 
+			timeUnit, repeatsNumber, instances[i]);
+		averageTimes.addBack(result);
+		verticesNumbers.addBack(instances[i]);
 		std::cout << "Done." << std::endl;
 	}
-	writer.writeExtended("simulated-annealing.csv", names, averageErrors, averageTimes);
+	writer.write("simulated-annealing.csv", verticesNumbers, averageTimes);
 
-	averageErrors.clear();
 	averageTimes.clear();
 
 	for (size_t i = 0; i < instancesNumber; i++)
 	{
-		AdjacencyMatrix matrix = Menu::readMatrix(instances[i].fileName);
-		auto result = provider.performExtendedTests(TabuSearch(), matrix,
-			instances[i].optimalCost, timeUnit, repeatsNumber);
-		averageTimes.addBack(result.averageTime);
-		averageErrors.addBack(result.averageError);
+		auto result = provider.performTests(TabuSearch(), 
+			timeUnit, repeatsNumber, instances[i]);
+		averageTimes.addBack(result);
 		std::cout << "Done." << std::endl;
 	}
-	writer.writeExtended("tabu-search.csv", names, averageErrors, averageTimes);
+	writer.write("tabu-search.csv", verticesNumbers, averageTimes);
 
 	delete[] instances;
 }

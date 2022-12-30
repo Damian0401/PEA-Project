@@ -11,7 +11,7 @@ namespace PEA
 		Path* execute(AdjacencyMatrix& matrix) override;
 
 	private:
-		double _coolingRatio = 0.999;
+		double _coolingRatio = 0.99999;
 		double _startTemperature = 1000;
 
 		int calculateCost(AdjacencyMatrix& matrix, SDIZO::Array<size_t>& vertices);

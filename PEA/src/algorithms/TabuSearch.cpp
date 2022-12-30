@@ -48,7 +48,12 @@ PEA::Path* PEA::TabuSearch::execute(AdjacencyMatrix& matrix)
 
         this->updateTabuList(currentPath, tabuList);
         if (sameSolutionCounter == _sameSolutionLimit)
+        {
+            /*_sameSolutionLimit = 0;
+            currentPath = this->getInitialSolution(currentPath.size());
+            currentCost = this->calculateCost(matrix, currentPath);*/
             break;
+        }
 
         sameSolutionCounter++;
     }
