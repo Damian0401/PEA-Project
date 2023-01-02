@@ -4,6 +4,7 @@
 #include "..\..\inc\algorithms\DynamicProgramming.hpp"
 #include "..\..\inc\algorithms\SimulatedAnnealing.hpp"
 #include "..\..\inc\algorithms\TabuSearch.hpp"
+#include "..\..\inc\algorithms\Genetic.hpp"
 #include "..\..\inc\utils\Timer.hpp"
 #include "..\..\inc\utils\TSPsolver.hpp"
 #include "..\..\inc\utils\MatrixReader.hpp"
@@ -115,6 +116,9 @@ void PEA::Menu::manualTests()
 	case PEA::Algorithm::TABU_SEARCH:
 		solver.solve(matrix, TabuSearch(), timeUnit, true);
 		break;
+	case PEA::Algorithm::GENETIC:
+		solver.solve(matrix, Genetic(), timeUnit, true);
+		break;
 	case PEA::Algorithm::NOT_IMPLEMENTED:
 	default:
 		std::cout << "Not implemented" << std::endl;
@@ -150,6 +154,10 @@ void PEA::Menu::automaticTests()
 	case PEA::Algorithm::TABU_SEARCH:
 		base = new SimulatedAnnealing();
 		fileName = "tabu-search.csv";
+		break;
+	case PEA::Algorithm::GENETIC:
+		base = new Genetic();
+		fileName = "genetic.csv";
 		break;
 	case PEA::Algorithm::NOT_IMPLEMENTED:
 	default:
@@ -221,6 +229,9 @@ void PEA::Menu::generateTests()
 	case PEA::Algorithm::TABU_SEARCH:
 		solver.solve(matrix, TabuSearch(), timeUnit, true);
 		break;
+	case PEA::Algorithm::GENETIC:
+		solver.solve(matrix, Genetic(), timeUnit, true);
+		break;
 	case PEA::Algorithm::NOT_IMPLEMENTED:
 	default:
 		std::cout << "Not implemented" << std::endl;
@@ -230,6 +241,8 @@ void PEA::Menu::generateTests()
 
 void PEA::Menu::extendedTests()
 {
+	std::cout << "Extended tests started" << std::endl;
+
 	int instancesNumber = 7;
 	int* instances = new int[]{
 		20, 30, 40, 50, 60, 70, 80
@@ -320,6 +333,7 @@ PEA::Algorithm PEA::Menu::selectAlgorithm()
 	std::cout << "[3] - Branch and Bound" << std::endl;
 	std::cout << "[4] - Simulated annealing" << std::endl;
 	std::cout << "[5] - Tabu search" << std::endl;
+	std::cout << "[6] - Genetic" << std::endl;
 
 	char algorithm = Menu::getChar();
 
@@ -335,6 +349,8 @@ PEA::Algorithm PEA::Menu::selectAlgorithm()
 		return Algorithm::SIMULATED_ANNEALING;
 	case '5':
 		return Algorithm::TABU_SEARCH;
+	case '6':
+		return Algorithm::GENETIC;
 	default:
 		return Algorithm::NOT_IMPLEMENTED;
 	}

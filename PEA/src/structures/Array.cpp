@@ -26,23 +26,6 @@ SDIZO::Array<T>::~Array()
 }
 
 template<typename T>
-SDIZO::Array<T>& SDIZO::Array<T>::operator=(const Array<T> other)
-{
-	if (this->head != nullptr)
-		delete[] head;
-
-	this->size = other.size;
-	this->head = new T[other.size];
-
-	for (size_t i = 0; i < size; i++)
-	{
-		this->head[i] = other.head[i];
-	}
-
-	return *this;
-}
-
-template<typename T>
 void SDIZO::Array<T>::addFront(const T& data)
 {
 	T* newHead = new T[this->size + 1];
@@ -87,7 +70,7 @@ void SDIZO::Array<T>::addBack(const T& data)
 }
 
 template<typename T>
-bool SDIZO::Array<T>::addAt(const size_t& index, const T& data)
+bool SDIZO::Array<T>::addAt(size_t index, const T& data)
 {
 	// Check if index is correct
 	if (index > this->size)
@@ -190,7 +173,7 @@ bool SDIZO::Array<T>::removeBack()
 }
 
 template<typename T>
-bool SDIZO::Array<T>::removeAt(const size_t& index)
+bool SDIZO::Array<T>::removeAt(const size_t index)
 {
 	// Check if index is correct
 	if (index >= this->size)
@@ -245,7 +228,7 @@ size_t SDIZO::Array<T>::getSize()
 }
 
 template<typename T>
-T SDIZO::Array<T>::get(const size_t& index)
+T SDIZO::Array<T>::get(const size_t index)
 {
 	if (index >= this->size)
 		throw new std::out_of_range("index out of range");
@@ -254,7 +237,7 @@ T SDIZO::Array<T>::get(const size_t& index)
 }
 
 template<typename T>
-void SDIZO::Array<T>::set(const size_t& index, const T& data)
+void SDIZO::Array<T>::set(const size_t index, const T& data)
 {
 	if (index >= this->size)
 		throw new std::out_of_range("index out of range");
@@ -328,9 +311,61 @@ bool SDIZO::Array<T>::contains(const T& element)
 	return false;
 }
 
+template<typename T>
+SDIZO::Array<T>& SDIZO::Array<T>::operator=(const Array<T> other)
+{
+	if (this->head != nullptr)
+		delete[] head;
+
+	this->size = other.size;
+	this->head = new T[other.size];
+
+	for (size_t i = 0; i < size; i++)
+	{
+		this->head[i] = other.head[i];
+	}
+
+	return *this;
+}
+
+template<typename T>
+bool SDIZO::Array<T>::operator==(const Array<T>& other)
+{
+	if (this->size != other.size)
+		return false;
+
+	for (size_t i = 0; i < this->size; i++)
+	{
+		if (this->head[i] != other.head[i])
+			return false;
+	}
+
+	return true;
+}
+
+template<typename T>
+bool SDIZO::Array<T>::operator!=(const Array<T>& other)
+{
+	return !(*this == other);
+}
+
+template<typename T>
+std::ostream& SDIZO::operator<< <>(std::ostream& os, const Array<T>& array)
+{
+	os << "size: " << array.size << std::endl;
+	for (size_t i = 0; i < array.size; i++)
+	{
+		os << array.head[i] << ' ';
+	}
+	os << std::endl;
+
+	return os;
+}
+
 template class SDIZO::Array<int>;
 template class SDIZO::Array<double>;
 template class SDIZO::Array<bool>;
 template class SDIZO::Array<size_t>;
 template class SDIZO::Array<long long>;
 template class SDIZO::Array<std::string>;
+template class SDIZO::Array<SDIZO::Array<size_t>>;
