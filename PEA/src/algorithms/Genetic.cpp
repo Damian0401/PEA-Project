@@ -23,10 +23,20 @@ PEA::Path* PEA::Genetic::execute(AdjacencyMatrix& matrix)
     for (size_t i = 0; i < _populationNumber; i++)
     {
         Array<Array<size_t>> newPopulation;
-        for(int i = 0; i < _populationSize; i += 2)
+        Array<int> newCosts;
+        
+        for (size_t i = 0; i < _populationSize * 0.1; i++)
         {
-            size_t firstIndex = i;
-            size_t secondIndex = i + 1;
+            newPopulation.addBack(currentPopulation.get(i));
+            newCosts.addBack(this->calculateCost(matrix, currentPopulation.get(i)));
+        }
+
+        while (newPopulation.getSize() < _populationSize)
+        {
+
+            size_t firstIndex;
+            size_t secondIndex;
+            this->generateIndexes(firstIndex, secondIndex, _eliteSize);
 
             auto firstParent = currentPopulation.get(firstIndex);
             auto secondParent = currentPopulation.get(secondIndex);
@@ -37,24 +47,18 @@ PEA::Path* PEA::Genetic::execute(AdjacencyMatrix& matrix)
             this->mutation(firstChild);
             this->mutation(secondChild);
 
-            Array<Array<size_t>> candidates;
-            candidates.addBack(firstParent);
-            candidates.addBack(secondParent);
-            candidates.addBack(firstChild);
-            candidates.addBack(secondChild);
-
-            this->updatePopulation(matrix, newPopulation, candidates);
+            newPopulation.addBack(firstChild);
+            newCosts.addBack(this->calculateCost(matrix, firstChild));
+            newPopulation.addBack(secondChild);
+            newCosts.addBack(this->calculateCost(matrix, secondChild));
         }
 
-        for (auto& solution : currentPopulation)
-        {
-            this->updateBestSolution(matrix, bestSolution, solution);
-        }
+        this->sortPopulation(newPopulation, newCosts, 0, currentCosts.getSize() - 1);
+        this->updateBestSolution(matrix, bestSolution, newPopulation.get(0));
 
         currentPopulation = newPopulation;
         std::cout << i << ": " << this->calculateCost(matrix, bestSolution) << std::endl;
     }
-
     
 	return new Path(bestSolution, bestCost);
 }
@@ -95,6 +99,11 @@ void PEA::Genetic::generateIndexes(size_t& firstIndex,
 
 void PEA::Genetic::mutation(Array<size_t>& vertices)
 {
+    float value = RandomGenerator::generate(0, 100) / 100.0;
+
+    if (value > _mutationRate)
+        return;
+
     switch (_mutationType)
     {
     case PEA::MutationType::INVERT:
@@ -167,6 +176,11 @@ void PEA::Genetic::scrambleMutation(Array<size_t>& vertices)
 
 SDIZO::Array<size_t> PEA::Genetic::crossover(Array<size_t>& firstParent, Array<size_t>& secondParent)
 {
+    float value = RandomGenerator::generate(0, 100) / 100.0;
+
+    if (value > _crossoverRate)
+        return firstParent;
+
     switch (_crossoverType)
     {
     case PEA::CrossoverType::OX:

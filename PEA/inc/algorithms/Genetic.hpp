@@ -34,8 +34,8 @@ namespace PEA
 		MutationType _mutationType = MutationType::INVERT;
 		float _crossoverRate = 0.5;
 		CrossoverType _crossoverType = CrossoverType::OX;
-		size_t _populationSize = 100;
-		size_t _populationNumber = 2000;
+		size_t _populationSize = 200;
+		size_t _populationNumber = 3000;
 		size_t _eliteSize = 0.5 * _populationSize;
 	};
 
