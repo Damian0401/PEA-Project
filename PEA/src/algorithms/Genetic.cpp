@@ -8,6 +8,7 @@ PEA::Path* PEA::Genetic::execute(AdjacencyMatrix& matrix)
     Array<Array<size_t>> currentPopulation;
     Array<int> currentCosts;
     size_t verticesNumber = matrix.getVerticesNumber();
+    _stopSize = verticesNumber * 10;
 
     while (currentPopulation.getSize() < _populationSize)
     {
@@ -18,14 +19,14 @@ PEA::Path* PEA::Genetic::execute(AdjacencyMatrix& matrix)
 
     this->sortPopulation(currentPopulation, currentCosts, 0, currentCosts.getSize() - 1);
     Array<size_t> bestSolution = currentPopulation.get(0);
-    int bestCost = currentCosts.get(0);
 
+    size_t currentStopSize = 0;
     for (size_t i = 0; i < _populationNumber; i++)
     {
         Array<Array<size_t>> newPopulation;
         Array<int> newCosts;
         
-        for (size_t i = 0; i < _populationSize * 0.1; i++)
+        for (size_t i = 0; i < _alphaSize; i++)
         {
             newPopulation.addBack(currentPopulation.get(i));
             newCosts.addBack(this->calculateCost(matrix, currentPopulation.get(i)));
@@ -54,12 +55,16 @@ PEA::Path* PEA::Genetic::execute(AdjacencyMatrix& matrix)
         }
 
         this->sortPopulation(newPopulation, newCosts, 0, currentCosts.getSize() - 1);
-        this->updateBestSolution(matrix, bestSolution, newPopulation.get(0));
+        this->updateBestSolution(matrix, bestSolution, newPopulation.get(0), currentStopSize);
 
         currentPopulation = newPopulation;
         std::cout << i << ": " << this->calculateCost(matrix, bestSolution) << std::endl;
+
+        if (currentStopSize > _stopSize)
+            break;
     }
     
+    int bestCost = this->calculateCost(matrix, bestSolution);
 	return new Path(bestSolution, bestCost);
 }
 
@@ -78,13 +83,17 @@ int PEA::Genetic::calculateCost(AdjacencyMatrix& matrix, SDIZO::Array<size_t>& v
 }
 
 void PEA::Genetic::updateBestSolution(AdjacencyMatrix& matrix, 
-    Array<size_t>& current, Array<size_t>& candidate)
+    Array<size_t>& current, Array<size_t>& candidate, size_t& stopSize)
 {
     int currentBestCost = this->calculateCost(matrix, current);
     int candidateCost = this->calculateCost(matrix, candidate);
+    stopSize++;
 
     if (candidateCost < currentBestCost)
+    {
         current = candidate;
+        stopSize = 0;
+    }
 }
 
 void PEA::Genetic::generateIndexes(size_t& firstIndex, 

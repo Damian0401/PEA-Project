@@ -174,6 +174,9 @@ void PEA::Menu::automaticTests()
 	std::cout << "Select end range" << std::endl;
 	int end = Menu::getNumber();
 
+	std::cout << "Select jump" << std::endl;
+	int jump = Menu::getNumber();
+
 	if (end <= start)
 	{
 		std::cout << "Invalid range" << std::endl;
@@ -183,7 +186,7 @@ void PEA::Menu::automaticTests()
 	Array<size_t> vertices;
 	Array<long long> times;
 
-	for (size_t i = start; i <= end; i++)
+	for (size_t i = start; i <= end; i += jump)
 	{
 		vertices.addBack(i);
 		long long time = provider.performTests(*base, TimeUnit::MICROSECONDS, 100, i);
@@ -243,41 +246,163 @@ void PEA::Menu::extendedTests()
 {
 	std::cout << "Extended tests started" << std::endl;
 
-	int instancesNumber = 7;
-	int* instances = new int[]{
-		20, 30, 40, 50, 60, 70, 80
+	auto instances = {
+		Instance(212, "graph_10.txt"),
+		Instance(39, "graph_17.txt"),
+		Instance(937, "graph_26.txt"),
+		Instance(699, "graph_42.txt"),
+		Instance(33523, "graph_48.txt"),
+		Instance(55209, "tsp_96.txt"),
+		Instance(73682, "tsp_152.txt"),
 	};
 
-	std::string basePath = "C:\\Users\\szkol\\Desktop\\PEA\\PEA-Project\\PEA\\results\\part-2\\";
+	std::string basePath = "C:\\Users\\szkol\\Desktop\\PEA\\PEA-Project\\PEA\\results\\part-3\\";
 	TestProvider provider;
 	TimeUnit timeUnit = TimeUnit::MILLISECONDS;
 	ResultWriter writer(basePath);
-	int repeatsNumber = 10;
-
-	SDIZO::Array<size_t> verticesNumbers;
+	int repeatsNumber = 5;
+	SDIZO::Array<double> values;
+	SDIZO::Array<double> averageErrors;
 	SDIZO::Array<long long> averageTimes;
-	for (size_t i = 0; i < instancesNumber; i++)
+	Genetic genetic;
+	genetic._crossoverType = CrossoverType::OX;
+	genetic._mutationRate = 0.5;
+	genetic._crossoverRate = 0.5;
+	genetic._populationNumber = 3000;
+
+	auto populationSizes = { 100, 200, 300 };
+
+	genetic._mutationType = MutationType::INVERT;
+	for (auto population : populationSizes)
 	{
-		auto result = provider.performTests(SimulatedAnnealing(), 
-			timeUnit, repeatsNumber, instances[i]);
-		averageTimes.addBack(result);
-		verticesNumbers.addBack(instances[i]);
+		genetic._populationSize = population;
+		for (auto& instance : instances)
+		{
+			AdjacencyMatrix matrix = Menu::readMatrix(instance.fileName);
+			auto result = provider.performExtendedTests(genetic, matrix,
+				instance.optimalCost, timeUnit, repeatsNumber);
+			values.addBack(matrix.getVerticesNumber());
+			averageTimes.addBack(result.averageTime);
+			averageErrors.addBack(result.averageError);
+			std::cout << "Done." << std::endl;
+		}
+		auto fileName = "genetic-invert-population" + std::to_string(population) + ".csv";
+		writer.writeExtended(fileName, values, "vertices", averageErrors, averageTimes);
+		std::cout << "Done: " << fileName << std::endl;
+
+		averageErrors.clear();
+		averageTimes.clear();
+		values.clear();
+	}
+
+	genetic._mutationType = MutationType::SWAP;
+	for (auto population : populationSizes)
+	{
+		genetic._populationSize = population;
+		for (auto& instance : instances)
+		{
+			AdjacencyMatrix matrix = Menu::readMatrix(instance.fileName);
+			auto result = provider.performExtendedTests(genetic, matrix,
+				instance.optimalCost, timeUnit, repeatsNumber);
+			values.addBack(matrix.getVerticesNumber());
+			averageTimes.addBack(result.averageTime);
+			averageErrors.addBack(result.averageError);
+			std::cout << "Done." << std::endl;
+		}
+		auto fileName = "genetic-swap-population" + std::to_string(population) + ".csv";
+		writer.writeExtended(fileName, values, "vertices", averageErrors, averageTimes);
+		std::cout << "Done: " << fileName << std::endl;
+
+		averageErrors.clear();
+		averageTimes.clear();
+		values.clear();
+	}
+
+	genetic._populationSize = 200;
+	Instance instance48(33523, "graph_48.txt");
+	AdjacencyMatrix matrix48 = Menu::readMatrix(instance48.fileName);
+
+	auto mutationRates = { 0.0, 0.3, 0.6, 0.9 };
+
+	genetic._mutationType = MutationType::INVERT;
+	for (auto mutationRate : mutationRates)
+	{
+		genetic._mutationRate = mutationRate;
+		auto result = provider.performExtendedTests(genetic, matrix48,
+			instance48.optimalCost, timeUnit, repeatsNumber);
+		values.addBack(mutationRate);
+		averageTimes.addBack(result.averageTime);
+		averageErrors.addBack(result.averageError);
 		std::cout << "Done." << std::endl;
 	}
-	writer.write("simulated-annealing.csv", verticesNumbers, averageTimes);
+	auto fileName = "genetic-mutation-invert.csv";
+	writer.writeExtended(fileName, values, "mutation rate", averageErrors, averageTimes);
+	std::cout << "Done: " << fileName << std::endl;
 
+	averageErrors.clear();
 	averageTimes.clear();
+	values.clear();
 
-	for (size_t i = 0; i < instancesNumber; i++)
+	genetic._mutationType = MutationType::SWAP;
+	for (auto mutationRate : mutationRates)
 	{
-		auto result = provider.performTests(TabuSearch(), 
-			timeUnit, repeatsNumber, instances[i]);
-		averageTimes.addBack(result);
+		genetic._mutationRate = mutationRate;
+		auto result = provider.performExtendedTests(genetic, matrix48,
+			instance48.optimalCost, timeUnit, repeatsNumber);
+		values.addBack(mutationRate);
+		averageTimes.addBack(result.averageTime);
+		averageErrors.addBack(result.averageError);
 		std::cout << "Done." << std::endl;
 	}
-	writer.write("tabu-search.csv", verticesNumbers, averageTimes);
+	fileName = "genetic-mutation-swap.csv";
+	writer.writeExtended(fileName, values, "mutation rate", averageErrors, averageTimes);
+	std::cout << "Done: " << fileName << std::endl;
 
-	delete[] instances;
+	averageErrors.clear();
+	averageTimes.clear();
+	values.clear();
+
+	genetic._mutationRate = 0.5;
+
+	auto crossoverRates = { 0.0, 0.3, 0.6, 0.9 };
+
+	genetic._mutationType = MutationType::INVERT;
+	for (auto crossoverRate : crossoverRates)
+	{
+		genetic._crossoverRate = crossoverRate;
+		auto result = provider.performExtendedTests(genetic, matrix48,
+			instance48.optimalCost, timeUnit, repeatsNumber);
+		values.addBack(crossoverRate);
+		averageTimes.addBack(result.averageTime);
+		averageErrors.addBack(result.averageError);
+		std::cout << "Done." << std::endl;
+	}
+	fileName = "genetic-crossover-invert.csv";
+	writer.writeExtended(fileName, values, "crossover rate", averageErrors, averageTimes);
+	std::cout << "Done: " << fileName << std::endl;
+
+	averageErrors.clear();
+	averageTimes.clear();
+	values.clear();
+
+	genetic._mutationType = MutationType::SWAP;
+	for (auto crossoverRate : crossoverRates)
+	{
+		genetic._crossoverRate = crossoverRate;
+		auto result = provider.performExtendedTests(genetic, matrix48,
+			instance48.optimalCost, timeUnit, repeatsNumber);
+		values.addBack(crossoverRate);
+		averageTimes.addBack(result.averageTime);
+		averageErrors.addBack(result.averageError);
+		std::cout << "Done." << std::endl;
+	}
+	fileName = "genetic-crossover-swap.csv";
+	writer.writeExtended(fileName, values, "crossover rate", averageErrors, averageTimes);
+	std::cout << "Done: " << fileName << std::endl;
+
+	averageErrors.clear();
+	averageTimes.clear();
+	values.clear();
 }
 
 int PEA::Menu::getNumber()

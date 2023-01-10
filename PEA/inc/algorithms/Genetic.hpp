@@ -8,15 +8,18 @@ namespace PEA
 {
 	using namespace SDIZO;
 
+
 	class Genetic : public AlgorithmBase
 	{
 	public:
 		Path* execute(AdjacencyMatrix& matrix) override;
 
+		friend class Menu;
+
 	private:
 		int calculateCost(AdjacencyMatrix& matrix, Array<size_t>& vertices);
 		void updateBestSolution(AdjacencyMatrix& matrix, 
-			Array<size_t>& current, Array<size_t>& candidate);
+			Array<size_t>& current, Array<size_t>& candidate, size_t& stopSize);
 		void generateIndexes(size_t& firstIndex, size_t& secondIndex, size_t verticesNumber);
 		void mutation(Array<size_t>& vertices);
 		void swapMutation(Array<size_t>& vertices);
@@ -34,9 +37,11 @@ namespace PEA
 		MutationType _mutationType = MutationType::INVERT;
 		float _crossoverRate = 0.5;
 		CrossoverType _crossoverType = CrossoverType::OX;
+		size_t _stopSize = 1000;
 		size_t _populationSize = 200;
 		size_t _populationNumber = 3000;
 		size_t _eliteSize = 0.5 * _populationSize;
+		size_t _alphaSize = 0.1 * _populationSize;
 	};
 
 }
